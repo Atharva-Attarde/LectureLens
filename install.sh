@@ -4,7 +4,7 @@
 
 PIP="${1:-pip}"
 
-echo "Installing Pdf2Speech dependencies..."
+echo "Installing LectureLens dependencies..."
 "$PIP" install -r requirements.txt
 
 echo ""
@@ -21,4 +21,4 @@ fi
 
 echo ""
 echo "Done! Test with:"
-echo "  python pdf2speech.py --list-voices"
+echo "  python lecturelens.py --list-voices"

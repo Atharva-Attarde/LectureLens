@@ -1,11 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Audio and media artifacts
 *.mp3
 *.mp4
 *.m4a
 *.wav
-*.pdf
-*.txt
-*.zip
+*.aac
+*.flac
 *.m3u
-__pycache__/
-*.pyc
+*.m3u8
+
+# PDF, archives, and datasets
+*.pdf
+*.zip
+*.tar*
+*.gz
+
+# Output directories
+Audiobook/
+output/
+dist/
+build/
+temp/
+scratch/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Operating System files
 .DS_Store
+Thumbs.db
+*~

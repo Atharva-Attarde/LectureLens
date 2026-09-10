@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Overnight Batch Audiobook Generation for Oppenheim
-# Total: 208 Pages across 6 Selected Chapters/Sections
-# Vision Model: qwen3.8:latest
+# LectureLens — Batch Audiobook Generation Script
 # ==============================================================================
 
 # Use conda environment python if available, else system python
@@ -12,9 +10,14 @@ else
     PYTHON_CMD="python"
 fi
 
-$PYTHON_CMD pdf2speech.py Oppenheim.pdf \
+PDF_INPUT="${1:-textbook.pdf}"
+PAGES="${2:-1-50}"
+OFFSET="${3:-0}"
+OUT_DIR="${4:-./Audiobook/Output}"
+
+$PYTHON_CMD lecturelens.py "$PDF_INPUT" \
     --per-page \
-    --pages "10-61,99-135,153-166,206-224,624-683,718-743" \
-    --offset 23 \
+    --pages "$PAGES" \
+    --offset "$OFFSET" \
     --model "qwen3.8:latest" \
-    --out-dir ./Audiobook/Open
+    --out-dir "$OUT_DIR"
