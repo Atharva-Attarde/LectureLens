@@ -3,9 +3,8 @@
 # LectureLens — Batch Audiobook Generation Script
 # ==============================================================================
 
-# Use conda environment python if available, else system python
-if [ -f "/home/atharva/miniconda3/envs/pdf2speech/bin/python" ]; then
-    PYTHON_CMD="/home/atharva/miniconda3/envs/pdf2speech/bin/python"
+if command -v python3 &>/dev/null; then
+    PYTHON_CMD="python3"
 else
     PYTHON_CMD="python"
 fi
