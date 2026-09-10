@@ -1,51 +1,80 @@
-# LectureLens 🎓📖
+# LectureLens 🎓👁️
 
-> **Turn technical textbooks and STEM research papers into crystal-clear, spoken professor audiobooks.**
+> **The Vision-LLM Powered STEM Audiobook Generator.**  
+> *Turn complex, math-heavy textbooks and scientific papers into spoken, professor-guided audio lectures.*
 
-**LectureLens** is a multimodal AI tool that transforms complex, math-heavy textbooks, multi-column scientific PDFs, and research papers into natural, engaging audio lectures. Powered by **Local Vision LLMs** (via [Ollama](https://ollama.com)) and high-speed neural TTS ([Kokoro](https://github.com/hexgrad/kokoro)), it operates 100% offline with zero cloud API keys.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Ollama](https://img.shields.io/badge/Vision_LLM-Ollama_Local-black.svg)](https://ollama.com)
+[![TTS: Kokoro](https://img.shields.io/badge/TTS-Kokoro--82M-green.svg)](https://github.com/hexgrad/kokoro)
+
+---
+
+## 👁️ Why Vision LLMs Change Everything
+
+Traditional PDF-to-audio tools use **raw text extraction (OCR/PDF scrapers)**. On academic textbooks and STEM papers, this fails completely:
+- ❌ **Broken Reading Order**: Multi-column papers get read horizontally across columns, scrambling sentences into gibberish.
+- ❌ **Corrupted Equations**: Fractions like $\frac{a}{b}$ become `"a"` followed three lines later by `"b"`. Superscripts, integrals, and Greek subscripts become unpronounceable text soup.
+- ❌ **Blind to Figures**: Graphs, circuit diagrams, and multi-panel figures are either skipped entirely or read as nonsense axis numbers (`0 1 2 3 -1 -2`).
+
+### 🚀 The LectureLens Vision-First Solution:
+
+```
+┌─────────────────┐       ┌────────────────────────┐       ┌───────────────────────┐       ┌──────────────────┐
+│  Textbook PDF   │  ──>  │  High-DPI Visual Page  │  ──>  │   Local Vision LLM    │  ──>  │    Kokoro TTS    │  ──>  page_0010.mp3
+│ (Equations/Fig) │       │   Render (150+ DPI)    │       │ (Qwen3.8 / Qwen3.5-VL)│       │ (Neural Spoken)  │       (Playlist Ready)
+└─────────────────┘       └────────────────────────┘       └───────────────────────┘       └──────────────────┘
+                                                                       │
+                                                       • Sees two-column flow naturally
+                                                       • Translates math to spoken English
+                                                       • Walks through diagrams (a, b, c, d)
+                                                       • Anchors to Equation & Section #s
+```
+
+Instead of scraping fragile raw text strings, **LectureLens renders each page into a high-resolution visual snapshot and feeds it directly into a local Vision LLM** (`qwen3.8:latest`, `qwen3.5:latest`, `qwen2.5-vl`). 
+
+The Vision model "reads" the page with **human-like spatial intelligence**:
+1. **Understands Layout Hierarchy**: Reads two-column layouts top-to-bottom, left-to-right without column bleeding.
+2. **Pedagogical Diagram Walkthroughs**: Identifies multi-panel figures (e.g. Figure 2.10 parts a, b, c, d) and describes the horizontal/vertical axes, waveforms, and physical intuition.
+3. **Translates Formulas to Spoken English**: Turns complex notation ($x[n] \to$ *"x of n"*, $\omega_0 \to$ *"omega naught"*, $\sum \to$ *"sum from minus infinity to n"*) into fluid lecture speech.
+4. **100% Local & Private**: Runs entirely on your local machine via [Ollama](https://ollama.com) with zero cloud API keys or subscriptions.
 
 ---
 
 ## 🌟 Key Features
 
-### 1. 📖 Real-Time Per-Page Streaming (`--per-page`)
-- Converts textbooks into discrete, numbered audio tracks (`page_0001.mp3`, `page_0002.mp3`, etc.).
-- **Start listening in 15 seconds**: You don't have to wait for an entire 800-page book to process.
-- **Automatic Playlist Generation (`playlist.m3u`)**: Instantly load the whole chapter into VLC, Audacious, or your phone for sequential listening.
-- **Crash-Resilient Resuming**: Skips already completed pages automatically so you can resume interrupted batch jobs anytime.
+### 1. 👁️ Multimodal Vision Reading (`--vision`)
+- Local Vision inference powered by Ollama (`qwen3.8`, `qwen3.5`, `qwen2.5-vl`, etc.).
+- Direct image understanding prevents formula breakage, missing symbols, and OCR distortion.
 
-### 2. 🔢 Printed Page to PDF Offset Mapping (`--offset`)
-- Solves the classic problem where printed book page numbers differ from PDF index numbers due to front matter (preface, TOC).
+### 2. 📖 Real-Time Per-Page Audio Streaming (`--per-page`)
+- Converts textbooks into discrete, numbered audio tracks (`page_0001.mp3`, `page_0002.mp3`, etc.).
+- **Start listening in 15 seconds**: You don't have to wait hours for an entire book to finish before listening.
+- **Auto-generated Playlist (`playlist.m3u`)**: Instantly open the output directory in VLC, Audacious, or your phone for sequential listening.
+- **Crash-Resilient Resuming**: Skips already generated pages automatically if you pause or resume.
+
+### 3. 🎯 Anchored Guided Reading (Eyes + Ears Synchronized)
+- The AI professor explicitly announces section headings (*"Section 2.2: Linear Systems"*) and equation numbers (*"Looking at Equation 2.21..."*).
+- Allows you to follow along visually in your printed or digital textbook without losing your place.
+
+### 4. 🔢 Printed Page to PDF Offset Mapping (`--offset`)
+- Eliminates page numbering confusion caused by Roman numeral prefaces and table of contents.
 - Enter the exact printed page numbers from the book:
   ```bash
   python lecturelens.py textbook.pdf --per-page --pages 10-61 --offset 23
   ```
 
-### 3. 📑 Multi-Range & Chapter Batch Selection
-- Specify multiple chapters or non-contiguous page ranges in a single run:
+### 5. 📑 Multi-Range Chapter Batch Selection
+- Process complex non-contiguous chapters in a single run:
   ```bash
   --pages "10-61,99-135,153-166,206-224,624-683,718-743"
   ```
 
-### 4. 👁️ Local Vision LLM Engine (`--vision`)
-- Uses local Vision models (`qwen3.8:latest`, `qwen3.5:latest`, `qwen2.5-vl`) to visually read pages.
-- Eliminates OCR errors on complex multi-column layouts, sidebars, matrices, and equations.
+### 6. 🗣️ Spoken Mathematics Engine
+- Formats equations for natural spoken delivery without screen-reader syntax artifacts (*"open brace"*, *"close bracket"*, *"quote unquote"*, LaTeX dollar signs).
 
-### 5. 🎯 Anchored Guided Reading & Diagram Pedagogy
-- **Synchronized Eyes & Ears**: The audio acts as a personal tutor, explicitly announcing section headings (*"Section 2.2: Linear Systems"*) and equation numbers (*"Looking at Equation 2.21..."*).
-- **Sub-Panel Diagram Walkthroughs**: Walks through multi-part figures (parts a, b, c, d), explaining horizontal and vertical axes, signal waveforms, and physical interpretations.
-
-### 6. 🗣️ Spoken Mathematics Translation Engine
-- Translates formulas into fluent spoken lecture English:
-  - $x[n]$ $\to$ *"x of n"*
-  - $h[n-k]$ $\to$ *"h of n minus k"*
-  - $\omega_0$ $\to$ *"omega naught"*
-  - $\sum_{k=-\infty}^{n} x[k]$ $\to$ *"sum from k equals minus infinity to n of x of k"*
-- Strips screen-reader artifacts (*"open brace"*, *"bracket"*, *"quote unquote"*, raw LaTeX syntax).
-
-### 7. 🔗 Page-to-Page Continuity & Memory Window
-- Passes the ending context (~100 words) from Page $N-1$ into Page $N$.
-- Seamlessly completes sentences and equations that get cut in half across page turns.
+### 7. 🔗 Page-to-Page Continuity Memory
+- Passes a trailing context window (~100 words) from Page $N-1$ into Page $N$ to complete sentences that span across page breaks.
 
 ---
 
@@ -63,7 +92,7 @@ cd LectureLens
 conda create -n lecturelens python=3.10 -y
 conda activate lecturelens
 
-# Install dependencies
+# Install Python dependencies
 pip install -r requirements.txt
 ```
 
@@ -79,9 +108,9 @@ brew install ffmpeg
 conda install -c conda-forge ffmpeg
 ```
 
-### Step 4: Install Ollama & Pull a Vision Model
+### Step 4: Install Ollama & Pull a Vision LLM
 1. Install [Ollama](https://ollama.com/download).
-2. Pull a vision-capable model:
+2. Pull your preferred Vision model:
 ```bash
 ollama pull qwen3.8:latest
 # or
@@ -92,33 +121,33 @@ ollama pull qwen3.5:latest
 
 ## 🎧 Usage Examples
 
-### 📚 1. Textbook Audiobook Mode (Page-by-Page)
-Generate audio page-by-page for specific chapters with page offset:
+### 📚 1. Textbook Audiobook Mode (Page-by-Page with Vision LLM)
+Generate page-by-page audio for specific chapters with page offset:
 ```bash
 python lecturelens.py textbook.pdf \
     --per-page \
     --pages "10-61,99-135" \
     --offset 23 \
     --model "qwen3.8:latest" \
-    --out-dir ./Audiobook/Chapters
+    --out-dir ./Audiobook/MathChapters
 ```
 
 ### 📄 2. Direct Research Paper Mode (Single MP3)
-Convert an entire academic paper directly into a single MP3:
+Convert an entire research paper directly from an arXiv URL or local file:
 ```bash
-# From arXiv link
+# Direct arXiv URL
 python lecturelens.py https://arxiv.org/pdf/2506.10947.pdf --mp3 --speed 1.2 --no-references
 
-# From local PDF
+# Local PDF file
 python lecturelens.py paper.pdf --mp3 --speed 1.2
 ```
 
-### ⚡ 3. Overnight Batch Script (`run.sh`)
-For long batch jobs (e.g., 200+ pages), run inside `tmux`:
+### ⚡ 3. Background Batch Processing (`run.sh`)
+For long overnight generation runs (e.g. 200+ pages), use `tmux`:
 ```bash
 tmux new -s audiobook
 ./run.sh
-# Detach with Ctrl+B then D
+# Detach anytime with Ctrl+B then D
 ```
 
 ---
@@ -132,7 +161,7 @@ tmux new -s audiobook
 | `--offset N` | `0` | Offset between printed page numbers and PDF indices (e.g. `--offset 23`) |
 | `--out-dir DIR` | `./<book>/` | Output directory for `--per-page` mode |
 | `--no-resume` | `off` | Overwrite existing page files instead of skipping completed pages |
-| `--model MODEL`, `-m` | auto | Ollama vision model (e.g. `qwen3.8:latest`, `qwen3.5:latest`) |
+| `--model MODEL`, `-m` | auto | Ollama Vision model to use (e.g. `qwen3.8:latest`, `qwen3.5:latest`) |
 | `--dpi DPI` | `150` | DPI rendering resolution for Vision processing |
 | `--speed X` | `1.0` | Speech speed multiplier (`0.5`–`3.0`, recommended: `1.0`–`1.3`) |
 | `--voice ID` | `af_heart` | Kokoro TTS voice (run `--list-voices` to see all) |
@@ -164,9 +193,9 @@ tmux new -s audiobook
 
 ## 📜 Acknowledgements & License
 
-- **Foundational Inspiration**: Built upon concepts from [pdf2speech](https://github.com/soumyasj/pdf2speech) by soumyasj.
+- **Foundational Concept**: Inspired by [pdf2speech](https://github.com/soumyasj/pdf2speech) by soumyasj.
 - **Neural TTS Engine**: [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) by hexgrad.
-- **Vision Inference**: [Ollama](https://ollama.com) and the [Qwen](https://github.com/QwenLM) model family.
-- **PDF Engine**: [PyMuPDF](https://github.com/pymupdf/PyMuPDF).
+- **Vision & Multimodal LLM**: Powered locally by [Ollama](https://ollama.com) and the [Qwen](https://github.com/QwenLM) model family.
+- **PDF Rendering**: [PyMuPDF](https://github.com/pymupdf/PyMuPDF).
 
 Licensed under the [MIT License](LICENSE).
