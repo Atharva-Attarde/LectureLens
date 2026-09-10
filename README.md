@@ -193,7 +193,7 @@ tmux new -s audiobook
 
 ## 📜 Acknowledgements & License
 
-- **Foundational Concept**: Inspired by [pdf2speech](https://github.com/soumyasj/pdf2speech) by soumyasj.
+- **Original Work**: Built from the work of [pdf2speech](https://github.com/soumyasj/pdf2speech) by [soumyasj](https://github.com/soumyasj).
 - **Neural TTS Engine**: [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) by hexgrad.
 - **Vision & Multimodal LLM**: Powered locally by [Ollama](https://ollama.com) and the [Qwen](https://github.com/QwenLM) model family.
 - **PDF Rendering**: [PyMuPDF](https://github.com/pymupdf/PyMuPDF).
